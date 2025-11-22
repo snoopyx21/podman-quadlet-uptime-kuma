@@ -1,0 +1,32 @@
+---
+- name: Clean up Podman - Remove all pods, images, volumes, networks and files
+  hosts: localhost
+
+  tasks:
+
+    - name: Remove pod file from quadlet directory
+      file:
+        path: $HOME/.config/containers/systemd/uptime-kuma.yaml
+        state: absent
+
+    - name: Remove kube file from quadlet directory
+      file:
+        path: $HOME/.config/containers/systemd/uptime-kuma.kube
+        state: absent
+
+    - name: Remove pod file from kube directory
+      file:
+        path: $HOME/.kube/uptime-kuma.yaml
+        state: absent
+
+    - name: Stopping pod
+      command: podman pod stop uptime-kuma
+
+    - name: Removing pod
+      command: podman pod rm uptime-kuma
+
+    - name: Removing uptime-kuma images
+      command: podman rmi -f docker.io/louislam/uptime-kuma
+
+    - name: Remove pod volume
+      command: podman volume rm uptime-kuma-hdd-data

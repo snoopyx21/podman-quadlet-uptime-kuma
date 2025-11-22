@@ -1,0 +1,13 @@
+[Unit]
+Description=Uptime Kuma
+
+[Kube]
+Yaml=/home/constantin/.kube/uptime-kuma.yaml
+# pour rootless :
+UserNS=keep-id
+
+[Service]
+#Restart=always
+
+[Install]
+WantedBy=default.target

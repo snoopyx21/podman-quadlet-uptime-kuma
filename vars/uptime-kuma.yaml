@@ -1,0 +1,14 @@
+podman_user: constantin
+podman_pod_path: ../files/pod/uptime-kuma.yaml
+podman_kube_path: ../files/kube/uptime-kuma.kube
+
+podman_run_as_user: "{{ podman_user }}"
+podman_run_as_group: "{{ podman_user }}"
+podman_firewall:
+  - port: 3001/tcp
+    state: enabled
+podman_quadlet_specs:
+  - file_src: ../files/pod/uptime-kuma.yaml
+  - file_src: ../files/kube/uptime-kuma.kube
+    type: kube
+    state: started        

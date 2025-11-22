@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: uptime-kuma
+  labels:
+    io.containers.autoupdate: "registry"
+spec:
+  containers:
+    - name: uptime-kuma
+      image: docker.io/louislam/uptime-kuma:2
+      ports:
+        - containerPort: 3001
+          hostPort: 3001
+      volumeMounts:
+        - mountPath: /hdd/data
+          name: uptime-kuma-hdd-data
+      env:
+        - name: TZ
+          value: Europe/Luxembourg
+  volumes:
+    - name: uptime-kuma-hdd-data
+      persistentVolumeClaim:
+        claimName: uptime-kuma-hdd-data
+
+# podman run -d --restart=always -p 3001:3001 -v uptime-kuma:/hdd/data --name uptime-kuma louislam/uptime-kuma:2

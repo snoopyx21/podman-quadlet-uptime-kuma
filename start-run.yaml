@@ -1,0 +1,34 @@
+---
+- name: Deploy Uptime Kuma via Kube Quadlet
+  hosts: localhost
+
+  vars_files:
+    - ./vars/uptime-kuma.yaml
+
+  pre_tasks:
+    - name: Install podman + dependencies
+      package:
+        name:
+          - podman
+          - slirp4netns
+          - fuse-overlayfs
+          - containernetworking-plugins
+        state: present
+
+    - name: Copy kube Quadlet unit
+      copy:
+        src: ./files/pod/uptime-kuma.yaml
+        dest: $HOME/.kube/uptime-kuma.yaml
+        owner: "{{ podman_user }}"
+        mode: "0644"
+
+  roles:
+    - role: linux-system-roles.podman
+
+  post_tasks:
+    - name: Check uptime-kuma pod is running
+      become_user: "{{ podman_user }}"
+      command: podman pod exists uptime-kuma
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
