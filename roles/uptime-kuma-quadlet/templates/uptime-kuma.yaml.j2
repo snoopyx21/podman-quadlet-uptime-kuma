@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ kuma_pod_name }}
+  labels:
+    io.containers.autoupdate: "registry"
+spec:
+  containers:
+    - name: uptime-kuma
+      image: {{ kuma_image }}
+      ports:
+        - containerPort: 3001
+          hostPort: 3001   
+      volumeMounts:
+        - mountPath: /hdd/data
+          name: uptime-kuma-hdd-data
+      env:
+        - name: TZ
+          value: {{ kuma_timezone }}
+  volumes:
+    - name: uptime-kuma-hdd-data
+      hostPath:
+        path: /hdd/data
+        type: Directory

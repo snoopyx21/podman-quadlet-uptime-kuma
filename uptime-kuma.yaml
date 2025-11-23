@@ -1,0 +1,7 @@
+---
+- name: Deploy uptime-kuma Quadlet
+  hosts: localhost
+
+  roles:
+    - uptime-kuma-quadlet
+

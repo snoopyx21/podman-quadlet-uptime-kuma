@@ -1,0 +1,52 @@
+---
+- name: Install Podman and dependencies
+  tags: deploy
+  package:
+    name:
+      - podman
+      - slirp4netns
+      - fuse-overlayfs
+    state: present
+
+- name: Create persistent data directory
+  tags: deploy
+  file:
+    path: "{{ kuma_data_path }}"
+    state: directory
+    owner: "{{ podman_user }}"
+    group: "{{ podman_user }}"
+    mode: "0755"
+
+- name: Deploy Kubernetes manifest for Kuma
+  tags: deploy
+  template:
+    src: uptime-kuma.yaml.j2
+    dest: "{{ quadlet_dir }}/{{ kuma_pod_name }}.yaml"
+    owner: "{{ podman_user }}"
+    group: "{{ podman_user }}"
+    mode: "0644"
+
+- name: Deploy Quadlet kube wrapper
+  tags: deploy
+  template:
+    src: uptime-kuma.kube.j2
+    dest: "{{ quadlet_dir }}/{{ kuma_pod_name }}.kube"
+    owner: "{{ podman_user }}"
+    group: "{{ podman_user }}"
+    mode: "0644"
+  notify:
+    - Reload Quadlet
+    - Start Kuma
+
+
+- name: Remove YAML + Kube + related files
+  tags: cleanup
+  file:
+    path: "{{ quadlet_dir }}/{{ item }}"
+    state: absent
+  loop:
+    - "{{ kuma_pod_name }}.yaml"
+    - "{{ kuma_pod_name }}.kube"
+  notify: 
+    - Stop Kuma
+    - Reload Quadlet

@@ -1,0 +1,25 @@
+---
+# Rootless
+podman_user: constantin
+
+# Nom du pod
+kuma_pod_name: uptime-kuma
+
+# Port d'écoute sur l'hôte
+kuma_port: 3001
+
+# Chemin où sont stockés les fichiers quadlet
+quadlet_dir: /etc/containers/systemd
+
+# Chemin où tu veux stocker les données persistantes
+kuma_data_path: /hdd/data
+
+# Fuseau horaire
+kuma_timezone: Europe/Luxembourg
+
+# Image 
+kuma_image: "docker.io/louislam/uptime-kuma:2"
+
+# Directory
+quadlet_dir: "$HOME/.config/containers/systemd"
+

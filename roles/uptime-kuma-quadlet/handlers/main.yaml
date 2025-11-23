@@ -1,0 +1,24 @@
+---
+# Handler : stop Kuma podman kube service
+- name: Stop Kuma Service
+  systemd:
+    name: "{{ kuma_pod_name }}.service"
+    state: stopped
+    scope: user
+  listen: Stop Kuma
+  ignore_errors: true
+
+- name: Reload Quadlet
+  shell: |
+    systemctl --user daemon-reload
+
+
+# Handler : start Kuma podman kube service
+- name: Start Kuma Service
+  systemd:
+    name: "{{ kuma_pod_name }}.service"
+    state: started
+    scope: user
+  listen: Start Kuma
+  ignore_errors: true
+

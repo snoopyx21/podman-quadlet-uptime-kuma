@@ -2,16 +2,24 @@
 
 Deploy uptime-kuma with Podman Quadlet
 
+## Installation
+
+Make sure to have the linux podman role.
+
+```bash
+chmod +x requirements
+./requirements.sh
+```
 
 ## Usage
 
 To start uptime-kuma on your device :
 ```bash
-ansiible-playbook uptime-kuma.yaml --tags deploy
+ansible-playbook start-run.yaml
 ```
 To stop this installation of uptime-kuma on your device :
 ```bash
-ansible-playbook uptime-kuma.yaml --tags cleanup
+ansible-playbook stop-run.yaml
 ```
 
 ## License
