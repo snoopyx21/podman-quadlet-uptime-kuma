@@ -37,6 +37,8 @@
   notify:
     - Reload Quadlet
     - Start Kuma
+    - Open Kuma port
+    - Reload firewalld
 
 
 - name: Remove YAML + Kube + related files
@@ -50,3 +52,5 @@
   notify: 
     - Stop Kuma
     - Reload Quadlet
+    - Close Kuma port
+    - Reload firewalld

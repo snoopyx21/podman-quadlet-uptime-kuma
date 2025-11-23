@@ -12,13 +12,13 @@ spec:
         - containerPort: 3001
           hostPort: 3001   
       volumeMounts:
-        - mountPath: /hdd/data
+        - mountPath: {{ kuma_data_path }}
           name: uptime-kuma-hdd-data
       env:
         - name: TZ
           value: {{ kuma_timezone }}
   volumes:
     - name: uptime-kuma-hdd-data
-      hostPath:
-        path: /hdd/data
-        type: Directory
+      persistentVolumeClaim:
+        claimName: uptime-kuma-hdd-data
+
